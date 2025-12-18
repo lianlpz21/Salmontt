@@ -1,38 +1,30 @@
 package model;
 
+import exceptions.RutInvalidoException;
+
 public class Rut {
 
-    private int numero;
-    private char digitoVerificador;
+    private String numero;
+    private String digitoVerificador;
 
-    public Rut(int numero, char digitoVerificador) {
-
-        if (numero < 0 || numero > 9) {
-            throw new IllegalArgumentException();
-        }else {
-            this.numero = numero;
-            this.digitoVerificador = digitoVerificador;
+    public Rut(String numero, String digitoVerificador) throws RutInvalidoException {
+        if (!validar(numero, digitoVerificador)) {
+            throw new RutInvalidoException("RUT inválido: " + numero + "-" + digitoVerificador);
         }
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
         this.numero = numero;
-    }
-
-    public char getDigitoVerificador() {
-        return digitoVerificador;
-    }
-
-    public void setDigitoVerificador(char digitoVerificador) {
         this.digitoVerificador = digitoVerificador;
+    }
+
+    private boolean validar(String numero, String dv) {
+        return numero != null && dv != null && dv.length() == 1;
+    }
+
+    public String getRutCompleto() {
+        return numero + "-" + digitoVerificador;
     }
 
     @Override
     public String toString() {
-        return numero + "-" + digitoVerificador;
+        return getRutCompleto();
     }
 }

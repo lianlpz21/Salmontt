@@ -1,6 +1,6 @@
 package model;
 
-public class Persona {
+public abstract class Persona {
 
     private String nombre;
     private Rut rut;
@@ -16,32 +16,20 @@ public class Persona {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public Rut getRut() {
         return rut;
-    }
-
-    public void setRut(Rut rut) {
-        this.rut = rut;
     }
 
     public Direccion getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
+    public abstract void mostrarRol();
 
     @Override
     public String toString() {
-        return "Persona{" +
-                "nombre='" + nombre + '\'' +
-                ", rut=" + rut +
-                ", direccion=" + direccion +
-                '}';
+        return "Nombre: " + nombre +
+                "\nRUT: " + rut +
+                "\nDirección: " + direccion;
     }
 }
