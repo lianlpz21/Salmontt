@@ -11,14 +11,19 @@ import java.util.Scanner;
 
 public class MenuConsola {
 
+    // Scanner para leer datos desde la consola
     private Scanner scanner;
+
+    // Lista polimórfica para almacenar clientes, empleados y proveedores
     private List<Registrable> registros;
 
+    // Constructor del menú
     public MenuConsola() {
         scanner = new Scanner(System.in);
         registros = new ArrayList<>();
     }
 
+    // Metodo principal que muestra el menú y controla la navegación
     public void iniciar() {
         int opcion;
 
@@ -30,16 +35,18 @@ public class MenuConsola {
             System.out.println("4. Mostrar registros");
             System.out.println("5. Mostrar productos");
             System.out.println("6. Crear orden de compra");
-            System.out.println("0. Salir");
+             System.out.println("0. Salir");
             System.out.print("Seleccione opción: ");
 
+            // Leer opción como texto para evitar errores
             String input = scanner.nextLine().trim();
             try {
                 opcion = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                opcion = -1; // opción inválida
+                opcion = -1; // Opción inválida
             }
 
+            // Ejecutar acción según la opción seleccionada
             switch (opcion) {
                 case 1 -> registrarCliente();
                 case 2 -> registrarEmpleado();
@@ -54,6 +61,7 @@ public class MenuConsola {
         } while (opcion != 0);
     }
 
+    // Registrar un cliente
     private void registrarCliente() {
         try {
             Persona cliente = crearPersona("Cliente");
@@ -64,6 +72,7 @@ public class MenuConsola {
         }
     }
 
+    // Registrar un empleado
     private void registrarEmpleado() {
         try {
             Persona empleado = crearPersona("Empleado");
@@ -74,6 +83,7 @@ public class MenuConsola {
         }
     }
 
+    // Registrar un proveedor
     private void registrarProveedor() {
         try {
             Persona proveedor = crearPersona("Proveedor");
@@ -84,13 +94,16 @@ public class MenuConsola {
         }
     }
 
+    // Crear una persona según el tipo solicitado
     private Persona crearPersona(String tipo) throws Exception {
+
         System.out.print("Nombre: ");
         String nombre = scanner.nextLine().trim();
 
+        // Ingreso y validación del RUT
         System.out.print("RUT completo (formato 12345678-5): ");
         String rutCompleto = scanner.nextLine().trim().toUpperCase();
-        rutCompleto = rutCompleto.replaceAll("[\\s\u00A0]", ""); // limpiar espacios invisibles
+        rutCompleto = rutCompleto.replaceAll("[\\s\u00A0]", "");
 
         ValidadorRut.validarFormato(rutCompleto);
 
@@ -100,6 +113,7 @@ public class MenuConsola {
 
         Rut rut = new Rut(numero, dv);
 
+        // Ingreso de dirección
         System.out.print("Calle: ");
         String calle = scanner.nextLine().trim();
 
@@ -117,9 +131,10 @@ public class MenuConsola {
 
         Direccion direccion = new Direccion(calle, numDir, comuna, ciudad, region);
 
+        // Crear objeto según el tipo de persona
         switch (tipo) {
             case "Cliente" -> {
-                System.out.print("Tipo de cliente (Persona / Empresa ): ");
+                System.out.print("Tipo de cliente (Persona / Empresa): ");
                 String tipoCliente = scanner.nextLine().trim();
                 return new Cliente(nombre, rut, direccion, tipoCliente);
             }
@@ -137,9 +152,10 @@ public class MenuConsola {
         }
     }
 
+    // Crear una orden de compra
     private void crearOrdenCompra() {
 
-        // Buscar clientes registrados
+        // Obtener solo los clientes registrados
         List<Cliente> clientes = new ArrayList<>();
 
         for (Registrable r : registros) {
@@ -153,7 +169,7 @@ public class MenuConsola {
             return;
         }
 
-        // Mostrar clientes
+        // Mostrar clientes disponibles
         System.out.println("\n--- CLIENTES ---");
         for (int i = 0; i < clientes.size(); i++) {
             System.out.println((i + 1) + ". " + clientes.get(i).getNombre());
@@ -165,7 +181,7 @@ public class MenuConsola {
 
         Cliente clienteSeleccionado = clientes.get(opcionCliente - 1);
 
-        // Crear tarjeta
+        // Crear tarjeta de pago
         System.out.print("Número de tarjeta: ");
         String numeroTarjeta = scanner.nextLine();
 
@@ -177,11 +193,10 @@ public class MenuConsola {
 
         Tarjeta tarjeta = new Tarjeta(numeroTarjeta, tipoTarjeta, banco);
 
-
+        // Crear orden de compra
         OrdenDeCompra orden = new OrdenDeCompra(clienteSeleccionado, tarjeta);
 
-
-        // Cargar productos desde archivo
+        // Cargar productos desde archivo TXT
         List<Producto> productos = LeerProductos.cargarProductos("src/data/productos.txt");
 
         if (productos.isEmpty()) {
@@ -191,12 +206,12 @@ public class MenuConsola {
 
         boolean seguir = true;
 
+        // Selección de productos
         while (seguir) {
             System.out.println("\n--- PRODUCTOS ---");
             for (int i = 0; i < productos.size(); i++) {
                 System.out.println((i + 1) + ". " + productos.get(i).getNombre() +
                         " $" + String.format("%.0f", productos.get(i).getPrecio()));
-
             }
 
             System.out.print("Seleccione producto (0 para terminar): ");
@@ -212,12 +227,12 @@ public class MenuConsola {
             }
         }
 
-        // Mostrar orden
+        // Mostrar la orden generada
         System.out.println("\n--- ORDEN GENERADA ---");
         System.out.println(orden);
     }
 
-
+    // Mostrar todos los registros del sistema
     private void mostrarRegistros() {
         System.out.println("\n--- REGISTROS ---");
         for (Registrable r : registros) {
@@ -229,6 +244,7 @@ public class MenuConsola {
         }
     }
 
+    // Mostrar productos cargados desde el archivo
     private void mostrarProductos() {
         System.out.println("\n--- PRODUCTOS ---");
 
