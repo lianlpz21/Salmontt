@@ -34,8 +34,13 @@ public class Producto {
         this.stock -= cantidad;
     }
 
+
+
     @Override
     public String toString() {
-        return nombre + " (" + codigo + ") - $" + precio + " | Stock: " + stock;
+        return nombre + " (" + codigo + ") - $" +
+                String.format("%.0f", precio) +
+                " | Stock: " + stock;
     }
+
 }

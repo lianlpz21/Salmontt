@@ -2,11 +2,11 @@ package model;
 
 import interfaces.Registrable;
 
-public class Proovedor extends Persona implements Registrable {
+public class Proveedor extends Persona implements Registrable {
 
     private String empresa;
 
-    public Proovedor(String nombre, Rut rut, Direccion direccion, String empresa) {
+    public Proveedor(String nombre, Rut rut, Direccion direccion, String empresa) {
         super(nombre, rut, direccion);
         this.empresa = empresa;
     }
@@ -18,11 +18,19 @@ public class Proovedor extends Persona implements Registrable {
 
     @Override
     public void mostrarDatos() {
-        System.out.println(this + "\nEmpresa: " + empresa);
+        System.out.println(this);
     }
 
     @Override
     public void mostrarRol() {
         System.out.println("Rol: Proveedor");
+    }
+
+    @Override
+    public String toString() {
+        return "Nombre: " + getNombre() +
+                "\nRUT: " + getRut() +
+                "\nDirección: " + getDireccion() +
+                "\nEmpresa: " + empresa;
     }
 }

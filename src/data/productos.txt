@@ -1,3 +1,3 @@
-P01;Salmón Atlántico;5000;10
-P02;Salmón Coho;4500;5
-P03;Salmón Salar;6000;8
+P001;Salmón Atlántico;9500;2000
+P002;Trucha;6500;15000
+P003;Salmón Coho;8200;10000

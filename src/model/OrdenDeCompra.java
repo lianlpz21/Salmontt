@@ -5,17 +5,24 @@ import java.util.List;
 
 public class OrdenDeCompra {
 
-    private Persona cliente;
-    private List<Producto> productos;
-    private String numeroOrden;
+    private static int contador = 1; // Generador automático
 
-    public OrdenDeCompra(Persona cliente, List<Producto> productos, String numeroOrden) {
+    private String numeroOrden;
+    private Cliente cliente;
+    private List<Producto> productos;
+    private Tarjeta tarjeta;
+
+    public OrdenDeCompra(Cliente cliente, Tarjeta tarjeta) {
+        this.numeroOrden = generarNumeroOrden();
         this.cliente = cliente;
-        this.numeroOrden = numeroOrden;
+        this.tarjeta = tarjeta;
         this.productos = new ArrayList<>();
     }
 
-    // Agregar producto al array
+    private String generarNumeroOrden() {
+        return String.format("OC-%03d", contador++);
+    }
+
     public void agregarProducto(Producto producto) {
         productos.add(producto);
     }
@@ -30,9 +37,21 @@ public class OrdenDeCompra {
 
     @Override
     public String toString() {
-        return "Orden de Compra: " + numeroOrden +
-                "\nCliente:\n" + cliente +
-                "\nProductos:\n" + productos +
-                "\nTotal: $" + calcularTotal();
+        StringBuilder detalleProductos = new StringBuilder();
+
+        for (Producto p : productos) {
+            detalleProductos.append("- ")
+                    .append(p.getNombre())
+                    .append(" $")
+                    .append(p.getPrecio())
+                    .append("\n");
+        }
+
+        return "ORDEN DE COMPRA Nº " + numeroOrden +
+                "\nCLIENTE:\n" + cliente +
+                "\n\nPRODUCTOS:\n" + detalleProductos +
+                "\nTOTAL: $" + String.format("%.0f", calcularTotal()) +
+                "\n\nPAGO CON:\n" + tarjeta;
+
     }
 }

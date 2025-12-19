@@ -1,30 +1,29 @@
 package model;
 
 import exceptions.RutInvalidoException;
+import utils.ValidadorRut;
 
 public class Rut {
-
     private String numero;
-    private String digitoVerificador;
+    private String dv;
 
-    public Rut(String numero, String digitoVerificador) throws RutInvalidoException {
-        if (!validar(numero, digitoVerificador)) {
-            throw new RutInvalidoException("RUT inválido: " + numero + "-" + digitoVerificador);
-        }
+    public Rut(String numero, String dv) throws RutInvalidoException {
         this.numero = numero;
-        this.digitoVerificador = digitoVerificador;
+        this.dv = dv.toUpperCase();
+        // Validación del formato
+        ValidadorRut.validarFormato(numero + "-" + dv);
     }
 
-    private boolean validar(String numero, String dv) {
-        return numero != null && dv != null && dv.length() == 1;
+    public String getNumero() {
+        return numero;
     }
 
-    public String getRutCompleto() {
-        return numero + "-" + digitoVerificador;
+    public String getDv() {
+        return dv;
     }
 
     @Override
     public String toString() {
-        return getRutCompleto();
+        return numero + "-" + dv;
     }
 }
